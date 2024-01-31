@@ -1,0 +1,211 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="niit.wei.mapper.DepartmentMapper" >
+  <resultMap id="BaseResultMap" type="niit.wei.entity.Department" >
+    <id column="Oid" property="oid" jdbcType="VARCHAR" />
+    <result column="KW_DepartmentID" property="kwDepartmentid" jdbcType="VARCHAR" />
+    <result column="KW_DepartmentName" property="kwDepartmentname" jdbcType="VARCHAR" />
+    <result column="KW_ShortName" property="kwShortname" jdbcType="VARCHAR" />
+    <result column="KW_Level" property="kwLevel" jdbcType="INTEGER" />
+    <result column="KW_ParentDepartment" property="kwParentdepartment" jdbcType="VARCHAR" />
+    <result column="Dep1" property="dep1" jdbcType="VARCHAR" />
+    <result column="Dep2" property="dep2" jdbcType="VARCHAR" />
+    <result column="Dep3" property="dep3" jdbcType="VARCHAR" />
+    <result column="Dep4" property="dep4" jdbcType="VARCHAR" />
+    <result column="OptimisticLockField" property="optimisticlockfield" jdbcType="INTEGER" />
+  </resultMap>
+  <resultMap id="ResultMapWithBLOBs" type="niit.wei.entity.Department" extends="BaseResultMap" >
+    <result column="KW_Remark" property="kwRemark" jdbcType="LONGVARCHAR" />
+  </resultMap>
+  <sql id="Base_Column_List" >
+    Oid, KW_DepartmentID, KW_DepartmentName, KW_ShortName, KW_Level, KW_ParentDepartment, 
+    Dep1, Dep2, Dep3, Dep4, OptimisticLockField
+  </sql>
+  <sql id="Blob_Column_List" >
+    KW_Remark
+  </sql>
+  <select id="selectByPrimaryKey" resultMap="ResultMapWithBLOBs" parameterType="java.lang.String" >
+    select 
+    <include refid="Base_Column_List" />
+    ,
+    <include refid="Blob_Column_List" />
+    from kw_department
+    where Oid = #{oid,jdbcType=VARCHAR}
+  </select>
+
+  <select id="departmentName" resultType="java.lang.String">
+    select KW_DepartmentName
+    from kw_department
+    where Oid = #{oid,jdbcType=VARCHAR}
+  </select>
+
+    <select id="departments" resultType="niit.wei.entity.Department">
+      select
+      <include refid="Base_Column_List" />
+      ,
+      <include refid="Blob_Column_List" />
+      from kw_department
+    </select>
+
+    <delete id="deleteByPrimaryKey" parameterType="java.lang.String" >
+    delete from kw_department
+    where Oid = #{oid,jdbcType=VARCHAR}
+  </delete>
+  <insert id="insert" parameterType="niit.wei.entity.Department" >
+    insert into kw_department (Oid, KW_DepartmentID, KW_DepartmentName, 
+      KW_ShortName, KW_Level, KW_ParentDepartment, 
+      Dep1, Dep2, Dep3, Dep4, 
+      OptimisticLockField, KW_Remark)
+    values (#{oid,jdbcType=VARCHAR}, #{kwDepartmentid,jdbcType=VARCHAR}, #{kwDepartmentname,jdbcType=VARCHAR}, 
+      #{kwShortname,jdbcType=VARCHAR}, #{kwLevel,jdbcType=INTEGER}, #{kwParentdepartment,jdbcType=VARCHAR}, 
+      #{dep1,jdbcType=VARCHAR}, #{dep2,jdbcType=VARCHAR}, #{dep3,jdbcType=VARCHAR}, #{dep4,jdbcType=VARCHAR}, 
+      #{optimisticlockfield,jdbcType=INTEGER}, #{kwRemark,jdbcType=LONGVARCHAR})
+  </insert>
+  <insert id="insertSelective" parameterType="niit.wei.entity.Department" >
+    insert into kw_department
+    <trim prefix="(" suffix=")" suffixOverrides="," >
+      <if test="oid != null" >
+        Oid,
+      </if>
+      <if test="kwDepartmentid != null" >
+        KW_DepartmentID,
+      </if>
+      <if test="kwDepartmentname != null" >
+        KW_DepartmentName,
+      </if>
+      <if test="kwShortname != null" >
+        KW_ShortName,
+      </if>
+      <if test="kwLevel != null" >
+        KW_Level,
+      </if>
+      <if test="kwParentdepartment != null" >
+        KW_ParentDepartment,
+      </if>
+      <if test="dep1 != null" >
+        Dep1,
+      </if>
+      <if test="dep2 != null" >
+        Dep2,
+      </if>
+      <if test="dep3 != null" >
+        Dep3,
+      </if>
+      <if test="dep4 != null" >
+        Dep4,
+      </if>
+      <if test="optimisticlockfield != null" >
+        OptimisticLockField,
+      </if>
+      <if test="kwRemark != null" >
+        KW_Remark,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides="," >
+      <if test="oid != null" >
+        #{oid,jdbcType=VARCHAR},
+      </if>
+      <if test="kwDepartmentid != null" >
+        #{kwDepartmentid,jdbcType=VARCHAR},
+      </if>
+      <if test="kwDepartmentname != null" >
+        #{kwDepartmentname,jdbcType=VARCHAR},
+      </if>
+      <if test="kwShortname != null" >
+        #{kwShortname,jdbcType=VARCHAR},
+      </if>
+      <if test="kwLevel != null" >
+        #{kwLevel,jdbcType=INTEGER},
+      </if>
+      <if test="kwParentdepartment != null" >
+        #{kwParentdepartment,jdbcType=VARCHAR},
+      </if>
+      <if test="dep1 != null" >
+        #{dep1,jdbcType=VARCHAR},
+      </if>
+      <if test="dep2 != null" >
+        #{dep2,jdbcType=VARCHAR},
+      </if>
+      <if test="dep3 != null" >
+        #{dep3,jdbcType=VARCHAR},
+      </if>
+      <if test="dep4 != null" >
+        #{dep4,jdbcType=VARCHAR},
+      </if>
+      <if test="optimisticlockfield != null" >
+        #{optimisticlockfield,jdbcType=INTEGER},
+      </if>
+      <if test="kwRemark != null" >
+        #{kwRemark,jdbcType=LONGVARCHAR},
+      </if>
+    </trim>
+  </insert>
+  <update id="updateByPrimaryKeySelective" parameterType="niit.wei.entity.Department" >
+    update kw_department
+    <set >
+      <if test="kwDepartmentid != null" >
+        KW_DepartmentID = #{kwDepartmentid,jdbcType=VARCHAR},
+      </if>
+      <if test="kwDepartmentname != null" >
+        KW_DepartmentName = #{kwDepartmentname,jdbcType=VARCHAR},
+      </if>
+      <if test="kwShortname != null" >
+        KW_ShortName = #{kwShortname,jdbcType=VARCHAR},
+      </if>
+      <if test="kwLevel != null" >
+        KW_Level = #{kwLevel,jdbcType=INTEGER},
+      </if>
+      <if test="kwParentdepartment != null" >
+        KW_ParentDepartment = #{kwParentdepartment,jdbcType=VARCHAR},
+      </if>
+      <if test="dep1 != null" >
+        Dep1 = #{dep1,jdbcType=VARCHAR},
+      </if>
+      <if test="dep2 != null" >
+        Dep2 = #{dep2,jdbcType=VARCHAR},
+      </if>
+      <if test="dep3 != null" >
+        Dep3 = #{dep3,jdbcType=VARCHAR},
+      </if>
+      <if test="dep4 != null" >
+        Dep4 = #{dep4,jdbcType=VARCHAR},
+      </if>
+      <if test="optimisticlockfield != null" >
+        OptimisticLockField = #{optimisticlockfield,jdbcType=INTEGER},
+      </if>
+      <if test="kwRemark != null" >
+        KW_Remark = #{kwRemark,jdbcType=LONGVARCHAR},
+      </if>
+    </set>
+    where Oid = #{oid,jdbcType=VARCHAR}
+  </update>
+  <update id="updateByPrimaryKeyWithBLOBs" parameterType="niit.wei.entity.Department" >
+    update kw_department
+    set KW_DepartmentID = #{kwDepartmentid,jdbcType=VARCHAR},
+      KW_DepartmentName = #{kwDepartmentname,jdbcType=VARCHAR},
+      KW_ShortName = #{kwShortname,jdbcType=VARCHAR},
+      KW_Level = #{kwLevel,jdbcType=INTEGER},
+      KW_ParentDepartment = #{kwParentdepartment,jdbcType=VARCHAR},
+      Dep1 = #{dep1,jdbcType=VARCHAR},
+      Dep2 = #{dep2,jdbcType=VARCHAR},
+      Dep3 = #{dep3,jdbcType=VARCHAR},
+      Dep4 = #{dep4,jdbcType=VARCHAR},
+      OptimisticLockField = #{optimisticlockfield,jdbcType=INTEGER},
+      KW_Remark = #{kwRemark,jdbcType=LONGVARCHAR}
+    where Oid = #{oid,jdbcType=VARCHAR}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="niit.wei.entity.Department" >
+    update kw_department
+    set KW_DepartmentID = #{kwDepartmentid,jdbcType=VARCHAR},
+      KW_DepartmentName = #{kwDepartmentname,jdbcType=VARCHAR},
+      KW_ShortName = #{kwShortname,jdbcType=VARCHAR},
+      KW_Level = #{kwLevel,jdbcType=INTEGER},
+      KW_ParentDepartment = #{kwParentdepartment,jdbcType=VARCHAR},
+      Dep1 = #{dep1,jdbcType=VARCHAR},
+      Dep2 = #{dep2,jdbcType=VARCHAR},
+      Dep3 = #{dep3,jdbcType=VARCHAR},
+      Dep4 = #{dep4,jdbcType=VARCHAR},
+      OptimisticLockField = #{optimisticlockfield,jdbcType=INTEGER}
+    where Oid = #{oid,jdbcType=VARCHAR}
+  </update>
+</mapper>

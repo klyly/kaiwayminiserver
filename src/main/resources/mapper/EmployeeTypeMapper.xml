@@ -1,0 +1,118 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="niit.wei.mapper.EmployeeTypeMapper" >
+  <resultMap id="BaseResultMap" type="niit.wei.entity.EmployeeType" >
+    <id column="Oid" property="oid" jdbcType="VARCHAR" />
+    <result column="KW_EmployeeTypeID" property="kwEmployeetypeid" jdbcType="VARCHAR" />
+    <result column="KW_EmployeeTypeName" property="kwEmployeetypename" jdbcType="VARCHAR" />
+    <result column="OptimisticLockField" property="optimisticlockfield" jdbcType="INTEGER" />
+  </resultMap>
+  <resultMap id="ResultMapWithBLOBs" type="niit.wei.entity.EmployeeType" extends="BaseResultMap" >
+    <result column="KW_Remark" property="kwRemark" jdbcType="LONGVARCHAR" />
+  </resultMap>
+  <sql id="Base_Column_List" >
+    Oid, KW_EmployeeTypeID, KW_EmployeeTypeName, OptimisticLockField
+  </sql>
+  <sql id="Blob_Column_List" >
+    KW_Remark
+  </sql>
+  <select id="selectByPrimaryKey" resultMap="ResultMapWithBLOBs" parameterType="java.lang.String" >
+    select 
+    <include refid="Base_Column_List" />
+    ,
+    <include refid="Blob_Column_List" />
+    from kw_employeetype
+    where Oid = #{oid,jdbcType=VARCHAR}
+  </select>
+  <select id="employeeTypeName" resultType="java.lang.String">
+    select KW_EmployeeTypeName from kw_employeetype
+    where Oid = #{oid,jdbcType=VARCHAR}
+  </select>
+    <select id="employeeTypes" resultType="niit.wei.entity.EmployeeType">
+      select
+      <include refid="Base_Column_List" />
+      ,
+      <include refid="Blob_Column_List" />
+      from kw_employeetype
+    </select>
+    <delete id="deleteByPrimaryKey" parameterType="java.lang.String" >
+    delete from kw_employeetype
+    where Oid = #{oid,jdbcType=VARCHAR}
+  </delete>
+  <insert id="insert" parameterType="niit.wei.entity.EmployeeType" >
+    insert into kw_employeetype (Oid, KW_EmployeeTypeID, KW_EmployeeTypeName, 
+      OptimisticLockField, KW_Remark)
+    values (#{oid,jdbcType=VARCHAR}, #{kwEmployeetypeid,jdbcType=VARCHAR}, #{kwEmployeetypename,jdbcType=VARCHAR}, 
+      #{optimisticlockfield,jdbcType=INTEGER}, #{kwRemark,jdbcType=LONGVARCHAR})
+  </insert>
+  <insert id="insertSelective" parameterType="niit.wei.entity.EmployeeType" >
+    insert into kw_employeetype
+    <trim prefix="(" suffix=")" suffixOverrides="," >
+      <if test="oid != null" >
+        Oid,
+      </if>
+      <if test="kwEmployeetypeid != null" >
+        KW_EmployeeTypeID,
+      </if>
+      <if test="kwEmployeetypename != null" >
+        KW_EmployeeTypeName,
+      </if>
+      <if test="optimisticlockfield != null" >
+        OptimisticLockField,
+      </if>
+      <if test="kwRemark != null" >
+        KW_Remark,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides="," >
+      <if test="oid != null" >
+        #{oid,jdbcType=VARCHAR},
+      </if>
+      <if test="kwEmployeetypeid != null" >
+        #{kwEmployeetypeid,jdbcType=VARCHAR},
+      </if>
+      <if test="kwEmployeetypename != null" >
+        #{kwEmployeetypename,jdbcType=VARCHAR},
+      </if>
+      <if test="optimisticlockfield != null" >
+        #{optimisticlockfield,jdbcType=INTEGER},
+      </if>
+      <if test="kwRemark != null" >
+        #{kwRemark,jdbcType=LONGVARCHAR},
+      </if>
+    </trim>
+  </insert>
+  <update id="updateByPrimaryKeySelective" parameterType="niit.wei.entity.EmployeeType" >
+    update kw_employeetype
+    <set >
+      <if test="kwEmployeetypeid != null" >
+        KW_EmployeeTypeID = #{kwEmployeetypeid,jdbcType=VARCHAR},
+      </if>
+      <if test="kwEmployeetypename != null" >
+        KW_EmployeeTypeName = #{kwEmployeetypename,jdbcType=VARCHAR},
+      </if>
+      <if test="optimisticlockfield != null" >
+        OptimisticLockField = #{optimisticlockfield,jdbcType=INTEGER},
+      </if>
+      <if test="kwRemark != null" >
+        KW_Remark = #{kwRemark,jdbcType=LONGVARCHAR},
+      </if>
+    </set>
+    where Oid = #{oid,jdbcType=VARCHAR}
+  </update>
+  <update id="updateByPrimaryKeyWithBLOBs" parameterType="niit.wei.entity.EmployeeType" >
+    update kw_employeetype
+    set KW_EmployeeTypeID = #{kwEmployeetypeid,jdbcType=VARCHAR},
+      KW_EmployeeTypeName = #{kwEmployeetypename,jdbcType=VARCHAR},
+      OptimisticLockField = #{optimisticlockfield,jdbcType=INTEGER},
+      KW_Remark = #{kwRemark,jdbcType=LONGVARCHAR}
+    where Oid = #{oid,jdbcType=VARCHAR}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="niit.wei.entity.EmployeeType" >
+    update kw_employeetype
+    set KW_EmployeeTypeID = #{kwEmployeetypeid,jdbcType=VARCHAR},
+      KW_EmployeeTypeName = #{kwEmployeetypename,jdbcType=VARCHAR},
+      OptimisticLockField = #{optimisticlockfield,jdbcType=INTEGER}
+    where Oid = #{oid,jdbcType=VARCHAR}
+  </update>
+</mapper>

@@ -1,0 +1,170 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="niit.wei.mapper.EmployeeMapper" >
+  <resultMap id="BaseResultMap" type="niit.wei.entity.Employee" >
+    <id column="Oid" property="oid" jdbcType="VARCHAR" />
+    <result column="KW_EmpID" property="kwEmpid" jdbcType="VARCHAR" />
+    <result column="KW_Name" property="kwName" jdbcType="VARCHAR" />
+    <result column="KW_Department" property="kwDepartment" jdbcType="VARCHAR" />
+    <result column="KW_EmployeeType" property="kwEmployeetype" jdbcType="VARCHAR" />
+    <result column="OptimisticLockField" property="optimisticlockfield" jdbcType="INTEGER" />
+  </resultMap>
+
+  <resultMap id="empMap" type="niit.wei.entity.Employee" >
+    <id column="Oid" property="oid" jdbcType="VARCHAR" />
+    <result column="KW_EmpID" property="kwEmpid" jdbcType="VARCHAR" />
+    <result column="KW_Name" property="kwName" jdbcType="VARCHAR" />
+    <result column="KW_Department" property="kwDepartment" jdbcType="VARCHAR" />
+    <result column="KW_EmployeeType" property="kwEmployeetype" jdbcType="VARCHAR" />
+    <result column="KW_BeginDate" property="kwBeginDate" jdbcType="TIMESTAMP" />
+    <result column="KW_EndDate" property="kwEndDate" jdbcType="TIMESTAMP" />
+    <result column="avator" property="avator" jdbcType="VARCHAR" />
+    <result column="OptimisticLockField" property="optimisticlockfield" jdbcType="INTEGER" />
+        <association property="departmentName" fetchType="lazy" column="KW_Department" select="niit.wei.mapper.DepartmentMapper.departmentName"/>
+        <association property="employeeTypeName" fetchType="lazy" column="KW_EmployeeType" select="niit.wei.mapper.EmployeeTypeMapper.employeeTypeName"/>
+  </resultMap>
+
+  <sql id="Base_Column_List" >
+    Oid, KW_EmpID, KW_Name, KW_Department, KW_EmployeeType,KW_BeginDate,KW_EndDate, OptimisticLockField,avator
+  </sql>
+<!--  <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.String" >-->
+  <select id="selectByPrimaryKey" resultMap="empMap" parameterType="java.lang.String" >
+    select
+    <include refid="Base_Column_List" />
+    from kw_employee
+    where Oid = #{oid,jdbcType=VARCHAR}
+  </select>
+
+  <select id="employees" resultMap="empMap">
+    select
+    <include refid="Base_Column_List" />
+    from kw_employee order by kw_EmpID
+  </select>
+
+  <select id="selectBykwEmpid" resultMap="empMap">
+    select
+    <include refid="Base_Column_List" />
+    from kw_employee
+    where KW_EmpID = #{kwEmpid,jdbcType=VARCHAR}
+  </select>
+
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.String" >
+    delete from kw_employee
+    where Oid = #{oid,jdbcType=VARCHAR}
+  </delete>
+    <delete id="deleteByKwEmpid">
+      delete from kw_employee
+      where KW_EmpID = #{kwEmpid,jdbcType=VARCHAR}
+    </delete>
+<!--  批量删除-->
+  <delete id="batchDeleteEmps">
+    delete from kw_employee where KW_EmpID in
+    <foreach collection="kwEmpids" item="kwEmpid" separator="," open="(" close=")">
+      #{kwEmpid}
+    </foreach>
+  </delete>
+
+  <insert id="insert" parameterType="niit.wei.entity.Employee" >
+    insert into kw_employee (Oid, KW_EmpID, KW_Name, 
+      KW_Department, KW_EmployeeType,kw_beginDate,kw_endDate, OptimisticLockField
+      )
+    values (#{oid,jdbcType=VARCHAR}, #{kwEmpid,jdbcType=VARCHAR}, #{kwName,jdbcType=VARCHAR}, 
+      #{kwDepartment,jdbcType=VARCHAR}, #{kwEmployeetype,jdbcType=VARCHAR},#{kwBeginDate},#{kwEndDate}, #{optimisticlockfield,jdbcType=INTEGER}
+      )
+  </insert>
+  <insert id="insertSelective" parameterType="niit.wei.entity.Employee" >
+    insert into kw_employee
+    <trim prefix="(" suffix=")" suffixOverrides="," >
+      <if test="oid != null" >
+        Oid,
+      </if>
+      <if test="kwEmpid != null" >
+        KW_EmpID,
+      </if>
+      <if test="kwName != null" >
+        KW_Name,
+      </if>
+      <if test="kwDepartment != null" >
+        KW_Department,
+      </if>
+      <if test="kwEmployeetype != null" >
+        KW_EmployeeType,
+      </if>
+      <if test="optimisticlockfield != null" >
+        OptimisticLockField,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides="," >
+      <if test="oid != null" >
+        #{oid,jdbcType=VARCHAR},
+      </if>
+      <if test="kwEmpid != null" >
+        #{kwEmpid,jdbcType=VARCHAR},
+      </if>
+      <if test="kwName != null" >
+        #{kwName,jdbcType=VARCHAR},
+      </if>
+      <if test="kwDepartment != null" >
+        #{kwDepartment,jdbcType=VARCHAR},
+      </if>
+      <if test="kwEmployeetype != null" >
+        #{kwEmployeetype,jdbcType=VARCHAR},
+      </if>
+      <if test="optimisticlockfield != null" >
+        #{optimisticlockfield,jdbcType=INTEGER},
+      </if>
+    </trim>
+  </insert>
+  <update id="updateByPrimaryKeySelective" parameterType="niit.wei.entity.Employee" >
+    update kw_employee
+    <set >
+      <if test="kwEmpid != null" >
+        KW_EmpID = #{kwEmpid,jdbcType=VARCHAR},
+      </if>
+      <if test="kwName != null" >
+        KW_Name = #{kwName,jdbcType=VARCHAR},
+      </if>
+      <if test="kwDepartment != null" >
+        KW_Department = #{kwDepartment,jdbcType=VARCHAR},
+      </if>
+      <if test="kwEmployeetype != null" >
+        KW_EmployeeType = #{kwEmployeetype,jdbcType=VARCHAR},
+      </if>
+      <if test="optimisticlockfield != null" >
+        OptimisticLockField = #{optimisticlockfield,jdbcType=INTEGER},
+      </if>
+    </set>
+    where Oid = #{oid,jdbcType=VARCHAR}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="niit.wei.entity.Employee" >
+    update kw_employee
+    set KW_EmpID = #{kwEmpid,jdbcType=VARCHAR},
+      KW_Name = #{kwName,jdbcType=VARCHAR},
+      KW_Department = #{kwDepartment,jdbcType=VARCHAR},
+      KW_EmployeeType = #{kwEmployeetype,jdbcType=VARCHAR},
+      OptimisticLockField = #{optimisticlockfield,jdbcType=INTEGER}
+    where Oid = #{oid,jdbcType=VARCHAR}
+  </update>
+
+  <update id="updateByEmpidSelective" parameterType="niit.wei.entity.Employee">
+    update kw_employee
+    <set >
+      <if test="kwEmpid != null" >
+        KW_EmpID = #{kwEmpid,jdbcType=VARCHAR},
+      </if>
+      <if test="kwName != null" >
+        KW_Name = #{kwName,jdbcType=VARCHAR},
+      </if>
+      <if test="kwDepartment != null" >
+        KW_Department = #{kwDepartment,jdbcType=VARCHAR},
+      </if>
+      <if test="kwEmployeetype != null" >
+        KW_EmployeeType = #{kwEmployeetype,jdbcType=VARCHAR},
+      </if>
+      <if test="optimisticlockfield != null" >
+        OptimisticLockField = #{optimisticlockfield,jdbcType=INTEGER},
+      </if>
+    </set>
+    where KW_EmpID = #{kwEmpid}
+  </update>
+</mapper>
