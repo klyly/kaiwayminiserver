@@ -15,6 +15,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 
 @SpringBootTest
@@ -57,5 +58,15 @@ class KaiwayminiserverApplicationTests {
 
     }
 
-
+    @Test
+    void contextLoads3() {
+        List<Employee> list = new ArrayList<>();
+        Employee employee = new Employee("1231215","123","123","30904396-aa9c-447b-b7b6-3cc7bf6e2e78","32f3c1b6-58d2-400b-9dbd-d167fd902a31",new Date(),new Date(),null,null);
+        Employee employee1 = new Employee("1231213","124","123","30904396-aa9c-447b-b7b6-3cc7bf6e2e78","32f3c1b6-58d2-400b-9dbd-d167fd902a31",new Date(),new Date(),null,null);
+        Employee employee2 = new Employee("1231214","125","123","30904396-aa9c-447b-b7b6-3cc7bf6e2e78","32f3c1b6-58d2-400b-9dbd-d167fd902a31",new Date(),new Date(),null,null);
+        list.add(employee);
+        list.add(employee1);
+        list.add(employee2);
+        employeeMapper.batchAddEmps(list);
+    }
 }

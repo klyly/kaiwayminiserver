@@ -115,7 +115,20 @@
       </if>
     </trim>
   </insert>
-  <update id="updateByPrimaryKeySelective" parameterType="niit.wei.entity.Employee" >
+
+    <insert id="batchAddEmps" parameterType="employee">
+      insert into kw_employee (Oid,KW_EmpID, KW_Name,
+                               KW_Department, KW_EmployeeType,kw_beginDate,kw_endDate, OptimisticLockField
+      )
+      values
+      <foreach collection="emps" item="emp" separator="," >
+        (#{emp.oid},#{emp.kwEmpid,jdbcType=VARCHAR}, #{emp.kwName,jdbcType=VARCHAR},
+        #{emp.kwDepartment,jdbcType=VARCHAR}, #{emp.kwEmployeetype,jdbcType=VARCHAR},#{emp.kwBeginDate},#{emp.kwEndDate}, #{emp.optimisticlockfield,jdbcType=INTEGER}
+        )
+      </foreach>
+    </insert>
+
+    <update id="updateByPrimaryKeySelective" parameterType="niit.wei.entity.Employee" >
     update kw_employee
     <set >
       <if test="kwEmpid != null" >

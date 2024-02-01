@@ -51,4 +51,9 @@ public class EmployeeServiceImpl implements EmployeeService {
     public void batchDeleteEmps(List<String> kwEmpids) {
         employeeMapper.batchDeleteEmps(kwEmpids);
     }
+
+    @Override
+    public void batchAddEmps(List<Employee> emps) {
+        employeeMapper.batchAddEmps(emps);
+    }
 }

@@ -2,19 +2,20 @@ package niit.wei.controller;
 
 import cn.hutool.core.bean.BeanUtil;
 import cn.hutool.core.lang.UUID;
-import cn.hutool.extra.template.engine.beetl.BeetlUtil;
 import com.github.pagehelper.PageHelper;
 import com.github.pagehelper.PageInfo;
 import lombok.extern.slf4j.Slf4j;
 import niit.wei.entity.Employee;
 import niit.wei.entity.pojo.EmployeePojo;
 import niit.wei.service.EmployeeService;
+import niit.wei.utils.ExcelUtils;
 import niit.wei.utils.ResultCode;
 import niit.wei.utils.ResultJson;
-import org.apache.ibatis.annotations.Param;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.multipart.MultipartFile;
 
+import java.io.IOException;
 import java.util.List;
 
 /**
@@ -76,5 +77,25 @@ public class EmployeeController {
     public ResultJson batchDeleteEmp(@RequestBody List<String> kwEmpids){
         employeeService.batchDeleteEmps(kwEmpids);
         return new ResultJson<>(null,ResultCode.SUCCESS);
+    }
+//    批量导入功能
+    @PostMapping("/batchUpload")
+    public  ResultJson uploadExcel(@RequestParam("file") MultipartFile file){
+
+        long startTime=System.currentTimeMillis();
+        try {
+            List<Employee> list= ExcelUtils.importExcel(file, Employee.class);
+            for (Employee employee : list) {
+                String uuid = UUID.randomUUID().toString();
+                employee.setOid(uuid);
+                log.info("Employee:{}",employee);
+            }
+            employeeService.batchAddEmps(list);
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+        long endTime=System.currentTimeMillis();
+        System.out.println("用时："+(endTime-startTime));
+        return new ResultJson(null,ResultCode.SUCCESS);
     }
 }

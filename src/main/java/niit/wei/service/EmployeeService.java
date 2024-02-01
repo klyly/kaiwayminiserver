@@ -23,4 +23,6 @@ public interface EmployeeService {
     int updateByEmpidSelective(Employee record);
 
     void batchDeleteEmps(@Param("kwEmpids") List<String> kwEmpids);
+
+    void batchAddEmps(@Param("emps") List<Employee> emps);
 }
